@@ -218,6 +218,17 @@
         // Close sidebar when clicking on a sidebar item
         document.querySelectorAll('.sidebar-item').forEach(item => {
             item.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                if (tabId) {
+                    // Switch to the corresponding tab
+                    setTimeout(() => {
+                        const tabBtn = document.querySelector(`.tab[data-tab="${tabId}"]`);
+                        if (tabBtn) {
+                            tabBtn.click();
+                        }
+                    }, 100);
+                }
+                
                 if (window.innerWidth <= 768) {
                     document.getElementById('appContainer').classList.remove('sidebar-open');
                     document.getElementById('hamburger').classList.remove('active');
